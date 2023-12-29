@@ -1,0 +1,68 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String   @unique
+  id        String   @id @default(cuid())
+  name      String
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  userId    String?
+  username  String   @unique
+}
+
+model Meal {
+  createdAt   DateTime          @default(now())
+  description String?
+  id          String            @id @default(cuid())
+  mealType    EnumMealMealType?
+  name        String?
+  tag         EnumMealTag[]
+  updatedAt   DateTime          @updatedAt
+}
+
+model UserPreference {
+  createdAt           DateTime                                @default(now())
+  dietaryRestrictions EnumUserPreferenceDietaryRestrictions[]
+  dislikedIngredients String?
+  favoriteCuisines    EnumUserPreferenceFavoriteCuisines?
+  id                  String                                  @id @default(cuid())
+  updatedAt           DateTime                                @updatedAt
+  userId              String?
+}
+
+enum EnumMealMealType {
+  Breakfast
+  Lunch
+  Dinner
+}
+
+enum EnumMealTag {
+  Vegan
+  GlutenFree
+  HighProtein
+  Keto
+}
+
+enum EnumUserPreferenceDietaryRestrictions {
+  Vegetarian
+  Vegan
+  NutFree
+  Eggetarian
+}
+
+enum EnumUserPreferenceFavoriteCuisines {
+  Italian
+  Indian
+  Mexican
+  American
+  Mughlai
+}
